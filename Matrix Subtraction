@@ -1,0 +1,70 @@
+/* Matrix Subtraction@TreesaJose
+Completed On: 13-08-2025 */
+
+#include <stdio.h>
+#define size 5
+
+int main(){
+	int A[size][size],B[size][size],C[size][size];
+	int m,n,p,q,i,j;
+	
+	printf("Program to perform Matrix Subtraction\n\n");
+	printf("Enter dimentsions of Matrix A: ");
+	scanf("%d%d",&m,&n);
+	printf("Enter dimentsions of Matrix B: ");
+	scanf("%d%d",&p,&q);
+	
+	if (m==p && n==q){
+		printf("\nEnter elements of Matrix A:\n");
+		for(i=0;i<m;i++){
+			for(j=0;j<n;j++){
+				printf("Enter element at A[%d][%d]: ",i,j);
+				scanf("%d",&A[i][j]);
+			}
+		}
+		
+		printf("\nEnter elements of Matrix B:\n");
+		for(i=0;i<p;i++){
+			for(j=0;j<q;j++){
+				printf("Enter element at B[%d][%d]: ",i,j);
+				scanf("%d",&B[i][j]);
+			}
+		}
+		
+		printf("\nMatrix A\n");
+		for(i=0;i<p;i++){
+			for(j=0;j<q;j++){
+				printf("%d\t",A[i][j]);
+			}
+			printf("\n");
+		}
+			
+		printf("\nMatrix B\n");
+		for(i=0;i<m;i++){
+			for(j=0;j<n;j++){
+				printf("%d\t",B[i][j]);
+			}
+			printf("\n");
+		}	
+		
+		for(i=0;i<m;i++){
+			for(j=0;j<n;j++){
+				C[i][j]=A[i][j]-B[i][j];
+			}
+		}
+		
+		printf("\nMatrix Subtraction Performed\n");
+		printf("\nResultant Matrix C\n");
+		for(i=0;i<m;i++){
+			for(j=0;j<n;j++){
+				printf("%d\t",C[i][j]);
+			}
+			printf("\n");
+		}
+		
+	}
+	else
+		printf("\nMatrix dimensions do not match!");	
+	
+	return 0;
+}
