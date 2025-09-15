@@ -1,0 +1,110 @@
+#include <stdio.h>
+#define MAX 5
+
+// Structure to represent a non-zero element
+struct Element {
+    int row; //row number
+    int col; // column number
+    int val; // non-zero value
+};
+
+// Function to read a sparse matrix
+void readMatrix(struct Element mat[], int *rows, int *cols, int *nz) {
+	int i;
+    printf("Enter number of rows, columns and non-zero elements: ");
+    scanf("%d %d %d", rows, cols, nz);
+
+    for ( i = 0; i < *nz; i++) {
+        printf("Enter row, column and value for element %d: ", i + 1);
+        scanf("%d %d %d", &mat[i].row, &mat[i].col, &mat[i].val);
+    }
+}
+
+// Function to display a sparse matrix
+void displayMatrix(struct Element mat[], int nz) {
+	int i;
+    printf("Row\tCol\tValue\n");
+    for ( i = 0; i < nz; i++) {
+        printf("%d\t%d\t%d\n", mat[i].row, mat[i].col, mat[i].val);
+    }
+}
+
+// Function to add two sparse matrices
+int addMatrix(struct Element A[], int nz1, struct Element B[], int nz2, struct Element C[]) {
+    int i = 0, j = 0, k = 0;
+
+    while (i < nz1 && j < nz2) {
+        if (A[i].row < B[j].row || (A[i].row == B[j].row && A[i].col < B[j].col)) {
+            C[k++] = A[i++];
+        }
+        else if (A[i].row > B[j].row || (A[i].row == B[j].row && A[i].col > B[j].col)) {
+            C[k++] = B[j++];
+        }
+        else {
+            C[k] = A[i];
+            C[k].val = A[i].val + B[j].val;
+            if (C[k].val != 0) k++;
+            i++;
+            j++;
+        }
+    }
+
+    while (i < nz1) C[k++] = A[i++];
+    while (j < nz2) C[k++] = B[j++];
+
+    return k;  // return the number of elements in the result matrix
+}
+
+// Menu function
+int menu() {
+    int choice;
+    printf("\n1. Enter Matrix A\n2. Enter Matrix B\n3. Display Matrices\n4. Add Matrices\n5. Exit\nEnter your choice: ");
+    scanf("%d", &choice);
+    return choice;
+}
+
+// Main function
+int main() {
+    struct Element A[MAX], B[MAX], C[MAX]; 
+	//struct Element A[MAX] means A is an array of structues containing upto 5 non-zero elements 
+    int r1 = 0, c1 = 0, nz1 = 0;
+    int r2 = 0, c2 = 0, nz2 = 0;
+    int result_count = 0;
+    int choice;
+
+    do {
+        choice = menu();
+        switch (choice) {
+            case 1:
+                printf("Enter Matrix A:\n");
+                readMatrix(A, &r1, &c1, &nz1);
+                break;
+            case 2:
+                printf("Enter Matrix B:\n");
+                readMatrix(B, &r2, &c2, &nz2);
+                break;
+            case 3:
+                printf("Matrix A:\n");
+                displayMatrix(A, nz1);
+                printf("Matrix B:\n");
+                displayMatrix(B, nz2);
+                break;
+            case 4:
+                if (r1 == r2 && c1 == c2) {
+                    result_count = addMatrix(A, nz1, B, nz2, C);
+                    printf("Resultant Matrix After Addition:\n");
+                    displayMatrix(C, result_count);
+                } else {
+                    printf("Matrix dimensions do not match! Cannot add.\n");
+                }
+                break;
+            case 5:
+                printf("Exiting program.\n");
+                break;
+            default:
+                printf("Invalid choice!\n");
+        }
+    } while (choice != 5);
+
+    return 0;
+}
