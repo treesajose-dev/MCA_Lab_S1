@@ -1,0 +1,115 @@
+/*
+Circular Queue Implementation using Array
+@Treesa Jose
+Roll no: 58
+Completed on: 13-08-2025
+*/
+
+#include <stdio.h>
+
+#define size 5   // Maximum size of the circular queue
+
+// Function to insert an element into the circular queue
+void enque(int a[], int *f, int *r, int num)
+{
+    // Check for circular queue overflow condition
+    if ((*r + 1) % size == *f)
+        printf("Queue is full\n");
+    else
+    {
+        // If queue is initially empty, set front to 0
+        if (*f == -1)
+            *f = 0;
+
+        // Increment rear in a circular manner and insert element
+        *r = (*r + 1) % size;
+        a[*r] = num;
+        printf("%d enqueued\n", num);
+    }
+}
+
+// Function to delete an element from the circular queue
+void deque(int a[], int *f, int *r)
+{
+    // Check for queue empty condition
+    if (*f == -1)
+        printf("Queue is empty so cannot remove from circular queue\n");
+    else
+    {
+        // Remove the front element
+        printf("Element removed is: %d\n", a[*f]);
+
+        // If only one element was present, reset both front and rear
+        if (*f == *r)
+        {
+            *f = -1;
+            *r = -1;
+        }
+        else
+        {
+            // Move front forward in a circular manner
+            *f = (*f + 1) % size;
+        }
+    }
+}
+
+// Function to display all elements in the circular queue
+void display(int a[], int f, int r)
+{
+    // Check for empty queue
+    if (f == -1)
+    {
+        printf("Queue is empty\n");
+        return;
+    }
+
+    int i = f;
+
+    // Display elements from front to rear in circular order
+    while (1)
+    {
+        printf("que[%d] = %d\t", i, a[i]);
+        if (i == r)
+            break;  // Stop when rear is reached
+        i = (i + 1) % size;
+    }
+    printf("\n");
+}
+
+void main()
+{
+    int front, rear, a[size], ch, num;
+    front = rear = -1;  // Initialize front and rear pointers
+
+    printf("Circular Queue Using Array\n------------------\n");
+
+    // Menu-driven program for queue operations
+    do
+    {
+        printf("\nMenu\n1. Enqueue Operation\n2. Dequeue Operation\n3. Display Queue\n4. Exit\nEnter your choice: ");
+        scanf("%d", &ch);
+
+        switch (ch)
+        {
+            case 1:
+                printf("Enter number to be inserted: ");
+                scanf("%d", &num);
+                enque(a, &front, &rear, num);
+                break;
+
+            case 2:
+                deque(a, &front, &rear);
+                break;
+
+            case 3:
+                display(a, front, rear);
+                break;
+
+            case 4:
+                break;
+
+            default:
+                printf("Wrong choice!\n");
+        }
+    } while (ch != 4);
+}
