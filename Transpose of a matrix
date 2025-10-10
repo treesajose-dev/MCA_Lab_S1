@@ -1,0 +1,96 @@
+/*
+Transpose of a Matrix
+@Treesa Jose
+Roll no: 58   
+Completed on: 27-07-2025
+*/
+
+#include <stdio.h>    // Standard I/O functions
+#define MAX 5         // Maximum number of rows/columns allowed
+
+// Function to display the menu and return user's choice
+int menu() {
+    int choice;
+    printf("\nMENU\n1. Enter Matrix\n2. Display Matrix\n3. Transpose Matrix\n4. Exit\nEnter your choice: ");
+    scanf("%d", &choice);
+    return choice;   // return menu option chosen by user
+}
+
+// Function to read elements into a matrix
+void readMatrix(int mat[MAX][MAX], int rows, int cols) {
+    int i, j;
+    printf("Enter (%dx%d) elements:\n", rows, cols);
+    for (i = 0; i < rows; i++) {
+        for (j = 0; j < cols; j++) {
+            printf("[%d][%d]: ", i, j);   // prompt for each position
+            scanf("%d", &mat[i][j]);
+        }
+    }
+}
+
+// Function to display a matrix
+void displayMatrix(int mat[MAX][MAX], int rows, int cols) {
+    int i, j;
+    if (rows == 0 || cols == 0) {   // if matrix not initialized
+        printf("Matrix is empty.\n");
+        return;
+    }
+    for (i = 0; i < rows; i++) {
+        for (j = 0; j < cols; j++) {
+            printf("%d  ", mat[i][j]);   // print each element with tab
+        }
+        printf("\n");  // new line after each row
+    }
+}
+
+// Function to display the transpose of a matrix
+void transposeMatrix(int mat[MAX][MAX], int rows, int cols) {
+    int i, j;
+    if (rows == 0 || cols == 0) {   // check if matrix exists
+        printf("Matrix is empty. Cannot transpose.\n");
+        return;
+    }
+    printf("\nTranspose of the matrix (%d x %d):\n", cols, rows);
+    for (i = 0; i < cols; i++) {        // transpose → swap rows & cols
+        for (j = 0; j < rows; j++) {
+            printf("%d  ", mat[j][i]);  // access element [j][i] instead of [i][j]
+        }
+        printf("\n");
+    }
+}
+
+// Main function
+int main() {
+    int mat[MAX][MAX];   // matrix declaration
+    int m = 0, n = 0;    // number of rows and columns
+    int choice;          // user menu choice
+
+    // Loop until user selects Exit (4)
+    while ((choice = menu()) != 4) {
+        switch (choice) {
+            case 1: // Enter matrix
+                printf("Enter number of rows and columns (max %d): ", MAX);
+                scanf("%d%d", &m, &n);
+                if (m <= 0 || m > MAX || n <= 0 || n > MAX) { // validate size
+                    printf("Invalid matrix size. Try again.\n");
+                    m = n = 0;   // reset size if invalid
+                    break;
+                }
+                readMatrix(mat, m, n);   // call input function
+                break;
+
+            case 2: // Display matrix
+                printf("\nMatrix:\n");
+                displayMatrix(mat, m, n);
+                break;
+
+            case 3: // Transpose matrix
+                transposeMatrix(mat, m, n);
+                break;
+
+            default: // Invalid menu option
+                printf("Invalid choice. Try again.\n");
+        }
+    }
+    return 0;  // successful termination
+}
